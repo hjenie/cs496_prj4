@@ -78,7 +78,7 @@ class SettingsViewController: UIViewController {
         CGContextSetLineCap(context, CGLineCap.Round)
         CGContextSetLineWidth(context, brush)
         
-        CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0)
+        CGContextSetRGBStrokeColor(context, red, green, blue, 1.0)
         CGContextMoveToPoint(context, 45.0, 45.0)
         CGContextAddLineToPoint(context, 45.0, 45.0)
         CGContextStrokePath(context)
@@ -93,11 +93,28 @@ class SettingsViewController: UIViewController {
         CGContextMoveToPoint(context, 45.0, 45.0)
         CGContextAddLineToPoint(context, 45.0, 45.0)
         
-        CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, opacity)
+        CGContextSetRGBStrokeColor(context, red, green, blue, opacity)
         CGContextStrokePath(context)
         imageViewOpacity.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        sliderBrush.value = Float(brush)
+        labelBrush.text = NSString(format: "%.1f", brush.native) as String
+        sliderOpacity.value = Float(opacity)
+        labelOpacity.text = NSString(format: "%.1f", opacity.native) as String
+        sliderRed.value = Float(red * 255.0)
+        labelRed.text = NSString(format: "%d", Int(sliderRed.value)) as String
+        sliderGreen.value = Float(green * 255.0)
+        labelGreen.text = NSString(format: "%d", Int(sliderGreen.value)) as String
+        sliderBlue.value = Float(blue * 255.0)
+        labelBlue.text = NSString(format: "%d", Int(sliderBlue.value)) as String
+        
+        drawPreview()
     }
 
   /*
