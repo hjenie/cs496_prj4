@@ -34,12 +34,26 @@ class ViewController: UIViewController {
   // MARK: - Actions
 
   @IBAction func reset(sender: AnyObject) {
+    mainImageView.image = nil
   }
 
   @IBAction func share(sender: AnyObject) {
   }
   
   @IBAction func pencilPressed(sender: AnyObject) {
+    // 1
+    var index = sender.tag ?? 0
+    if index < 0 || index >= colors.count {
+        index = 0
+    }
+    
+    // 2
+    (red, green, blue) = colors[index]
+    
+    // 3
+    if index == colors.count - 1 {
+        opacity = 1.0
+    }
   }
     
     
@@ -106,5 +120,33 @@ class ViewController: UIViewController {
         tempImageView.image = nil
     }
     
+    let colors: [(CGFloat, CGFloat, CGFloat)] = [
+        (0, 0, 0),
+        (105.0 / 255.0, 105.0 / 255.0, 105.0 / 255.0),
+        (1.0, 0, 0),
+        (0, 0, 1.0),
+        (51.0 / 255.0, 204.0 / 255.0, 1.0),
+        (102.0 / 255.0, 204.0 / 255.0, 0),
+        (102.0 / 255.0, 1.0, 0),
+        (160.0 / 255.0, 82.0 / 255.0, 45.0 / 255.0),
+        (1.0, 102.0 / 255.0, 0),
+        (1.0, 1.0, 0),
+        (1.0, 1.0, 1.0),
+        ]
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let settingsViewController = segue.destinationViewController as! SettingsViewController
+        settingsViewController.delegate = self
+        settingsViewController.brush = brushWidth
+        settingsViewController.opacity = opacity
+    }
+
+    
 }
 
+extension ViewController: SettingsViewControllerDelegate {
+    func settingsViewControllerFinished(settingsViewController: SettingsViewController) {
+        self.brushWidth = settingsViewController.brush
+        self.opacity = settingsViewController.opacity
+    }
+}
