@@ -72,17 +72,19 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     let maxZoom : CGFloat = 15.0
     
   var lastPoint = CGPoint.zero
-  var red: CGFloat = 0.0
-  var green: CGFloat = 0.0
-  var blue: CGFloat = 0.0
   var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
-
+    
+    var red: CGFloat = 0.0
+    var green: CGFloat = 0.0
+    var blue: CGFloat = 0.0
+    
   @IBOutlet weak var scrollView: PassTouchesScrollView!
   @IBOutlet weak var drawView: UIView!
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
+    @IBOutlet weak var backImageView: UIImageView!
 
   @IBOutlet weak var locationView: UIView!
   @IBOutlet weak var locationBox: UIView!
@@ -100,6 +102,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     self.locationView.layer.borderColor = UIColor(red:153/255.0, green:102/255.0, blue:51/255.0, alpha: 0.5).CGColor
     self.locationBox.layer.borderWidth = 1.5
     self.locationBox.layer.borderColor = UIColor(red:0, green:0, blue:1, alpha: 0.7).CGColor
+    //self.view.insertSubview(backImageView, atIndex: 0)
+    
   }
 
   override func didReceiveMemoryWarning() {
@@ -120,14 +124,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    // MARK: - Actions
     @IBAction func LoadPhoto(sender: UIButton) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .PhotoLibrary
         imagePickerController.delegate = self
         presentViewController(imagePickerController, animated: true, completion: nil)
-    
     }
+   
     
   @IBAction func reset(sender: AnyObject) {
     mainImageView.image = nil
@@ -144,19 +147,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     presentViewController(activity, animated: true, completion: nil)
   }
   
-  @IBAction func pencilPressed(sender: AnyObject) {
-
-    var index = sender.tag ?? 0
-    if index < 0 || index >= colors.count {
-        index = 0
-    }
-    
-    (red, green, blue) = colors[index]
-
-    if index == colors.count - 1 {
-        opacity = 1.0
-    }
-  }
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -302,19 +292,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UIImagePickerContr
     }
     
 
-    let colors: [(CGFloat, CGFloat, CGFloat)] = [
-        (0, 0, 0),
-        (105.0 / 255.0, 105.0 / 255.0, 105.0 / 255.0),
-        (1.0, 0, 0),
-        (0, 0, 1.0),
-        (51.0 / 255.0, 204.0 / 255.0, 1.0),
-        (102.0 / 255.0, 204.0 / 255.0, 0),
-        (102.0 / 255.0, 1.0, 0),
-        (160.0 / 255.0, 82.0 / 255.0, 45.0 / 255.0),
-        (1.0, 102.0 / 255.0, 0),
-        (1.0, 1.0, 0),
-        (1.0, 1.0, 1.0),
-        ]
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let settingsViewController = segue.destinationViewController as! SettingsViewController

@@ -36,12 +36,52 @@ class SettingsViewController: UIViewController {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
   }
+    
+    func updateRGB(){
+        sliderRed.setValue(Float(red * 255.0), animated: true)
+        sliderBlue.setValue(Float(blue  * 255.0), animated: true)
+        sliderGreen.setValue(Float(green  * 255.0), animated: true)
+        labelRed.text = NSString(format: "%d", Int(sliderRed.value)) as String
+        labelGreen.text = NSString(format: "%d", Int(sliderGreen.value)) as String
+        labelBlue.text = NSString(format: "%d", Int(sliderBlue.value)) as String
+    }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
 
+    @IBAction func pencilPressed(sender: AnyObject) {
+        
+        var index = sender.tag ?? 0
+        if index < 0 || index >= colors.count {
+            index = 0
+        }
+        
+        (red, green, blue) = colors[index]
+        
+        if index == colors.count - 1 {
+            opacity = 1.0
+        }
+        updateRGB()
+        drawPreview()
+        print("pencil")
+    }
+    
+    let colors: [(CGFloat, CGFloat, CGFloat)] = [
+        (0, 0, 0),
+        (105.0 / 255.0, 105.0 / 255.0, 105.0 / 255.0),
+        (1.0, 0, 0),
+        (0, 0, 1.0),
+        (51.0 / 255.0, 204.0 / 255.0, 1.0),
+        (102.0 / 255.0, 204.0 / 255.0, 0),
+        (102.0 / 255.0, 1.0, 0),
+        (160.0 / 255.0, 82.0 / 255.0, 45.0 / 255.0),
+        (1.0, 102.0 / 255.0, 0),
+        (1.0, 1.0, 0),
+        (1.0, 1.0, 1.0),
+        ]
+    
   @IBAction func close(sender: AnyObject) {
     dismissViewControllerAnimated(true, completion: nil)
     self.delegate?.settingsViewControllerFinished(self)
@@ -106,15 +146,12 @@ class SettingsViewController: UIViewController {
         labelBrush.text = NSString(format: "%.1f", brush.native) as String
         sliderOpacity.value = Float(opacity)
         labelOpacity.text = NSString(format: "%.1f", opacity.native) as String
-        sliderRed.value = Float(red * 255.0)
-        labelRed.text = NSString(format: "%d", Int(sliderRed.value)) as String
-        sliderGreen.value = Float(green * 255.0)
-        labelGreen.text = NSString(format: "%d", Int(sliderGreen.value)) as String
-        sliderBlue.value = Float(blue * 255.0)
-        labelBlue.text = NSString(format: "%d", Int(sliderBlue.value)) as String
+        updateRGB()
         
         drawPreview()
     }
+    
+
 
   /*
   // MARK: - Navigation
