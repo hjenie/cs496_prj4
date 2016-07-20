@@ -89,7 +89,7 @@ class SettingsViewController: UIViewController {
         context = UIGraphicsGetCurrentContext()
         
         CGContextSetLineCap(context, CGLineCap.Round)
-        CGContextSetLineWidth(context, 20)
+        CGContextSetLineWidth(context, 40)
         CGContextMoveToPoint(context, 45.0, 45.0)
         CGContextAddLineToPoint(context, 45.0, 45.0)
         
