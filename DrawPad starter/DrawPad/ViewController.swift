@@ -89,7 +89,8 @@ class ViewController: UIViewController, UIScrollViewDelegate,UIImagePickerContro
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    //self.view.insertSubview(mainImageView, atIndex: 1)
+    //self.view.insertSubview(tempImageView, atIndex: 0)
     scrollView.delegate = self
     scrollView.delegatePass = self
     
