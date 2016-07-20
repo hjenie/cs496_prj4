@@ -34,17 +34,23 @@ class PassTouchesScrollView: UIScrollView {
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        super.touchesCancelled(touches, withEvent: event)
         print("cancled")
+        super.touchesCancelled(touches, withEvent: event)
+        
+        self.delegatePass?.touchesCancelled(touches, withEvent: event)
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         print("scrollMoved")
-        print("zoomscale", self.zoomScale)
+        //print("zoomscale", self.zoomScale)
         //print("contentOffset" + "%f %f",self.contentOffset.x,self.contentOffset.y)
         // Notify it's delegate about touched
-        self.delegatePass?.touchesMoved(touches, withEvent: event)
-        
+        if(!self.dragging){
+            self.delegatePass?.touchesMoved(touches, withEvent: event)
+        }
+        else{
+            print("dragging!")
+        }
         if self.dragging == true {
             self.nextResponder()?.touchesMoved(touches, withEvent: event)
         } else {            
@@ -179,6 +185,10 @@ class ViewController: UIViewController, UIScrollViewDelegate { // UIScrollViewDe
         }
     }
     
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        tempImageView.image = nil
+    }
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         print("Ended")
         print("it is ",scrollView.contentSize.width / 2, scrollView.contentSize.height / 2)
@@ -199,15 +209,15 @@ class ViewController: UIViewController, UIScrollViewDelegate { // UIScrollViewDe
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        print("viewForZomming")
-        print("before center : ",self.drawView.center)
+        //print("viewForZomming")
+        //print("before center : ",self.drawView.center)
         let screenRect = UIScreen.mainScreen().bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
         //self.drawView.center = CGPointMake(screenWidth / 2, screenHeight / 2)
-        print("after center : ",self.drawView.center)
+        //print("after center : ",self.drawView.center)
         //self.scrollView.contentOffset = CGPoint(x:-50, y:-50)
-        print("offset : ",self.scrollView.contentOffset)
+        //print("offset : ",self.scrollView.contentOffset)
         return self.drawView
     }
     
