@@ -70,7 +70,7 @@ class PassTouchesScrollView: UIScrollView {
     }
 }
 
-class ViewController: UIViewController, UIScrollViewDelegate { // UIScrollViewDelegate
+class ViewController: UIViewController, UIScrollViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate { // UIScrollViewDelegate
     
   var lastPoint = CGPoint.zero
   var red: CGFloat = 0.0
@@ -79,13 +79,13 @@ class ViewController: UIViewController, UIScrollViewDelegate { // UIScrollViewDe
   var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
-
+    
 
   @IBOutlet weak var scrollView: PassTouchesScrollView!
   @IBOutlet weak var drawView: UIView!
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
-    
+
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -103,8 +103,28 @@ class ViewController: UIViewController, UIScrollViewDelegate { // UIScrollViewDe
     // Dispose of any resources that can be recreated.
   }
     
-  // MARK: - Actions
-
+    //MARK: UIImagePickerControllerDelegate
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        mainImageView.image = selectedImage
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - Actions
+    @IBAction func LoadPhoto(sender: UIButton) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .PhotoLibrary
+        imagePickerController.delegate = self
+        presentViewController(imagePickerController, animated: true, completion: nil)
+    
+    }
+    
+    
   @IBAction func reset(sender: AnyObject) {
     mainImageView.image = nil
   }
